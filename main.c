@@ -9,7 +9,28 @@
 // =========================================================
 
 int main() {
+  // Starting The List
+  node *alt = insert_front(NULL, "Cough Syrup", "Young The Giant");
+  alt = insert_alpha(alt, "Take A Walk", "Passion Pit");
+  alt = insert_alpha(alt, "No Room In Frame", "Death Cab For Cutie");
+  alt = insert_alpha(alt, "Cleanse Song", "Bright Eyes");
 
+  // Song List
+  printf("Some Alternative Music:\n");
+  print_list(alt);
+
+  // Song Search
+  printf("\nQuery: Room\n");
+  print_node(find_song(alt, "Room"));
+  printf("\nQuery: Song\n");
+  print_node(find_song(alt, "Song"));
+  printf("\nQuery: Huzzah\n");
+  print_node(find_song(alt, "Huzzah"));
+		
+  // Create Library
+
+
+  /*
   // Starting A Linked List
   node *Foo = (node *)malloc(sizeof(node));
   Foo->child = 0; Foo->v = 0;
@@ -38,6 +59,6 @@ int main() {
   free_list(Foo);
 
   // Is there actually any way to test this?
-
+  */
   return 0;
 }
