@@ -5,12 +5,6 @@
 #include <string.h>
 #include "linked.h"
 
-struct node {
-  char title[128];
-  char artist[128];
-  struct node *child;
-};
-
 // Functions
 // =========================================================
 // print_node
@@ -42,6 +36,17 @@ void clear_list(node *n) {
     strcpy(n->artist, "");
     clear_list(n->child);
   }
+}
+
+// listlen
+// takes a node (list) and returns its length
+int listlen(node *n) {
+  int len = 0;
+  while (n) {
+    len++;
+    n = n->child;
+  }
+  return len;
 }
 
 // insert_front
@@ -99,4 +104,38 @@ node* free_list(node *n) {
     free_list(n->child);
   free(n);
   return n;
+}
+
+// get_random_song
+// returns a random song
+node* get_random_song(node *n) {
+  if (n) {
+    int l = listlen(n);
+    int seed = rand() % l;
+    for (l = 0; l < seed; l++)
+      n = n->child;
+  }
+  return n;
+}
+
+// remove_song
+// removes the song at a certain index if it exists, and then returns the frontmost node
+node* remove_song(node* n, int index) {
+  int l = listlen(n);
+  node* ret = n;
+  if (index < 0 || index > l - 1)
+    return n;
+  if (!index) {
+    ret = n->child;
+    free(n);
+  } else {
+    while (index - 1) {
+      n = n->child;
+      index--;
+    }
+    node* newChild = n->child->child;
+    free(n->child);
+    n->child = newChild;
+  }
+  return ret;
 }

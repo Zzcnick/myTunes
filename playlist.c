@@ -5,12 +5,6 @@
 #include "playlist.h" 
 #include "linked.h"
 
-struct node {
-  char title[128];
-  char artist[128];
-  struct node *child;
-};
-
 struct playlist {
   node library[26]; // Alphabetical
 };
