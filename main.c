@@ -64,7 +64,7 @@ int main() {
   // Create Library
   playlist* Alt = (playlist *)malloc(sizeof(playlist));
   init_playlist(Alt);
-  clear_playlist(Alt);
+  clear_playlist(Alt); // Does this really do anything...?
   print_playlist(Alt);
 
   return 0;

@@ -1,4 +1,4 @@
-GCC = gcc -g 
+GCC = gcc -g
 
 all: linked.o playlist.o main.o
 	$(GCC) linked.o playlist.o main.o -o myTunes.out
