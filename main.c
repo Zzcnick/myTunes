@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "linked.h"
+//#include "linked.h"
+#include "playlist.h"
 
 // Testing
 // =========================================================
@@ -12,6 +13,7 @@ int main() {
   // Seeding for Randomness
   srand(time(NULL));
 
+  // LINKED LIST TESTING
   // Starting The List
   node *alt = insert_front(NULL, "Cough Syrup", "Young The Giant");
   alt = insert_alpha(alt, "Take A Walk", "Passion Pit");
@@ -58,7 +60,12 @@ int main() {
   // Freeing the List - Verified with valgrind
   free_list(alt);
 
+  // PLAYLIST TESTING
   // Create Library
-  
+  playlist* Alt = (playlist *)malloc(sizeof(playlist));
+  init_playlist(Alt);
+  clear_playlist(Alt);
+  print_playlist(Alt);
+
   return 0;
 }
