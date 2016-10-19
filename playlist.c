@@ -2,18 +2,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "playlist.h" 
 
 // Functions
 // =====================================================
 // init_playlist
 // initializes the playlist
-playlist* init_playlist(playlist *pl) {
-  int i;
-  for (i = 0; i < 26; i++) {
-    pl->library[i] = (node *)malloc(sizeof(node));
-  }
-  return pl;
+playlist* init_playlist() {
+  return (playlist *)calloc(1,sizeof(playlist));
 }
 
 // print_playlist 
@@ -26,42 +23,82 @@ void print_playlist(playlist *pl) {
   }
 }
 
-// clear_playlist
-// clear all songs but don't delete the playlist
-void clear_playlist(playlist *pl) {
-  int i;
-  for (i = 0; i < 26; i++) {
-    clear_list(pl->library[i]);
+// print_all_letter
+// takes a letter input and prints out all songs in the letter
+void print_all_letter(playlist *pl, char c) {
+  int index = (c - 65) % 26;
+  printf("%c: ", index + 65);
+  print_list(pl->library[index]);
+}
+
+// print_all_artist
+void print_all_artist(playlist *pl, char Artist[]) {
+  node *tmp;
+  tmp = pl->all;
+  while (tmp) {
+    if (strstr(tmp->artist, Artist))
+      print_node(tmp);
+    tmp = tmp->child;
   }
 }
 
-// add_song - TO TEST
+// playlist_add_song
 // adds a song into the playlist alphabetically
-void add_song(playlist *pl, char Title[], char Artist[]) {
-  int index = (*Title - 65) % 26;
-  insert_alpha(pl->library[index], Title, Artist);
+void playlist_add_song(playlist *pl, char Title[], char Artist[]) {
+  int index = (*Artist - 65) % 26;
+  pl->library[index] = insert_alpha(pl->library[index], Title, Artist);
+  pl->all = insert_alpha(pl->all, Title, Artist);
 }
 
-// search_song - TO TEST
+// playlist_remove_song
+// removes a song from playlist that matches a given title and artist, if it exists
+node* playlist_remove_song(playlist *pl, char Title[], char Artist[]) {
+  int l_initial = listlen(pl->all);
+  node* ret = remove_song(pl->all, Title, Artist);
+  int l_final = listlen(pl->all);
+  // Removing from library if removed from all songs
+  if (l_initial - l_final) {
+    pl->all = ret;
+    int i = 0;
+    for (i; i < 26; i++) {
+      l_initial = listlen(pl->library[i]);
+      ret = remove_song(pl->library[i], Title, Artist);
+      l_final = listlen(pl->library[i]);
+      if (!l_final) {
+	free(pl->library[i]);
+	pl->library[i] = (node *)calloc(1,sizeof(node));
+	break;
+      } else if (l_initial - l_final) {
+	pl->library[i] = ret;
+	break;
+      }
+    }
+  }
+  return ret;
+}
+
+// search_song
 // returns first song alphabetically with a certain title in the playlist
 node* search_song(playlist *pl, char Title[]) {
-  int i; node *n;
-  for (i = 0; i < 26; i++) {
-    n = find_song(pl->library[i], Title);
-    if (!n)
-      break;
-  }
-  return n;
+  return find_song(pl->all, Title);
 }
 
-// search_artist - TO TEST
+// search_artist
 // returns first song by the artist in the playlist
 node* search_artist(playlist *pl, char Artist[]) {
-  int i; node *n;
-  for (i = 0; i < 26; i++) {
-    n = find_artist(pl->library[i], Artist);
-    if (!n)
-      break;
+  return find_artist(pl->all, Artist);
+}
+
+// delete_playlist
+// destroys the playlist nice and good
+void delete_playlist(playlist *pl) {
+  int i = 0;
+  for (i; i<26; i++) {
+    if (pl->library[i])
+      free_list(pl->library[i]);
+    else
+      free(pl->library[i]);
   }
-  return n;
+  free(pl->all);
+  free(pl);
 }

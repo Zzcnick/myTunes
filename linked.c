@@ -19,6 +19,7 @@ void print_node(node *n) {
 // print_list
 // prints all values of the linked list
 void print_list(node *n) {
+  if (!n) { printf("<No Songs>\n"); return; }
   printf("\"%s\" by %s", n->title, n->artist);
   if (n->child) {
     printf(" >> ");
@@ -62,11 +63,11 @@ node* insert_front(node *n, char Title[], char Artist[]) {
 // insert_alpha
 // inserts a song node at the correct location in alphabetical order and returns the front node
 node* insert_alpha(node *n, char Title[], char Artist[]) {
-  if (strcmp(Title, n->title) < 0)
+  if (!n || strcmp(Artist, n->artist) < 0)
     return insert_front(n, Title, Artist);
   node *ret = n;
   while (n->child)
-    if (strcmp(Title, n->child->title) > 0)
+    if (strcmp(Artist, n->child->artist) > 0)
       n = n->child;
     else
       break;
@@ -86,7 +87,7 @@ node* find_song(node *n, char Title[]) {
   return n;
 }
 
-// find_song
+// find_artist
 // Takes an artist name and returns first song by the artist, null otherwise
 node* find_artist(node *n, char Artist[]) {
   while (n) {
@@ -118,9 +119,9 @@ node* get_random_song(node *n) {
   return n;
 }
 
-// remove_song
+// remove_index
 // removes the song at a certain index if it exists, and then returns the frontmost node
-node* remove_song(node* n, int index) {
+node* remove_index(node* n, int index) {
   int l = listlen(n);
   node* ret = n;
   if (index < 0 || index > l - 1)
@@ -136,6 +137,32 @@ node* remove_song(node* n, int index) {
     node* newChild = n->child->child;
     free(n->child);
     n->child = newChild;
+  }
+  return ret;
+}
+
+// remove_song
+// removes a song from a list given a title and artist, if it exists and returns front node
+node* remove_song(node* n, char Title[], char Artist[]) {
+  node* ret = n;
+  // Size 0
+  if (!n) return ret;
+  // Size 1
+  if (strstr(n->title, Title) && strstr(n->artist, Artist)) {
+    ret = n->child;
+    free(n);
+  } else {
+    // Size 2+
+    while (n->child) {
+      if (strstr(n->child->title, Title) &&
+	  strstr(n->child->artist, Artist)) {
+	node* newChild = n->child->child;
+	free(n->child);
+	n->child = newChild;
+	break;
+      }
+      n = n->child;
+    }
   }
   return ret;
 }
