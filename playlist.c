@@ -89,6 +89,25 @@ node* search_artist(playlist *pl, char Artist[]) {
   return find_artist(pl->all, Artist);
 }
 
+// shuffle
+// returns a random playlist from a given playlist
+node* shuffle(playlist *pl) {
+  node* raw = pl->all;
+  int l = listlen(raw);
+  node* copy = NULL;
+  while (l) {
+    copy = insert_front(copy, raw->title, raw->artist);
+    raw = raw->child;
+    l--;
+  }
+  l = listlen(copy);
+  while (l) {
+    
+    l--;
+  }
+  return copy;
+}
+
 // delete_playlist
 // destroys the playlist nice and good
 void delete_playlist(playlist *pl) {
@@ -102,3 +121,4 @@ void delete_playlist(playlist *pl) {
   free(pl->all);
   free(pl);
 }
+

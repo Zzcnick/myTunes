@@ -125,8 +125,11 @@ int main() {
   playlist_remove_song(Alt, "Woulda", "Thought");
   print_playlist(Alt);
 
-  printf("\nDeleting playlist...\nDone\n");
+  // Shuffling
+  printf("\nReturning a shuffle...\n");
+  print_list(shuffle(Alt));
 
+  printf("\nDeleting playlist...\n");
   delete_playlist(Alt); 
 /*===============================================================  
   ===============================================================*/

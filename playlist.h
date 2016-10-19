@@ -19,5 +19,6 @@ void playlist_add_song(playlist *pl, char Title[], char Artist[]);
 node* playlist_remove_song(playlist *pl, char Title[], char Artist[]);
 node* search_song(playlist *pl, char Title[]);
 node* search_artist(playlist *pl, char Artist[]);
+node* shuffle(playlist *pl);
 void delete_playlist(playlist *pl);
 
