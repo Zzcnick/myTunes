@@ -157,12 +157,57 @@ node* remove_index(node* n, int index) {
 
 // remove_song
 // removes a song from a list given a title and artist, if it exists and returns front node
+
+// remove_song
+// removes a song from a list given a title and artist, if it exists and returns front node
+node* remove_song(node* n, char Title[], char Artist[]) {
+  node* ret = n;
+  // Size 0
+  if (!n) return ret;
+  // Size 1
+  if (strstr(n->title, Title) && strstr(n->artist, Artist)) {
+    ret = n->child;
+    free(n);
+  } else {
+    // Size 2+
+    while (n->child) {
+      if (strstr(n->child->title, Title) &&
+	  strstr(n->child->artist, Artist)) {
+	node* newChild = n->child->child;
+	free(n->child);
+	n->child = newChild;
+	break;
+      }
+      n = n->child;
+    }
+  }
+  return ret;
+}
+/*
 node* remove_song(node* n, char Title[], char Artist[]) {
   node* ret = n;
   int l = listlen(n);
   // Size 0
   if (!l) return ret;
   // Size 1
+  if (l == 1) {
+    if (strstr(n->title, Title) && strstr(n->artist, Artist)) {
+      free(n);
+      return NULL;
+    }
+  } else {
+    // Size 2+
+    while (n->child) {
+      if (strstr(n->child->title, Title) &&
+	  strstr(n->child->artist, Artist)) {
+	node* newChild = n->child->child;
+	free(n->child);
+	n->child = newChild;
+	break;
+      }
+      n = n->child;
+    }
+  }
   if (strstr(n->title, Title) && strstr(n->artist, Artist)) {
     if (l == 1) {
       free(n);
@@ -185,3 +230,4 @@ node* remove_song(node* n, char Title[], char Artist[]) {
   }
   return ret;
 }
+*/

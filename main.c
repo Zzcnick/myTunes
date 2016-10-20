@@ -60,15 +60,24 @@ int main() {
   // Removing Song by Name
   printf("\nRemoving 'Dark' and 'Cutie'...\n");
   print_list(alt = remove_song(alt, "Dark", "Cutie"));
+  printf("Length After Removing: %d", listlen(alt));
   printf("\nRemoving 'Syrup' and 'Young'...\n");
   print_list(alt = remove_song(alt, "Syrup", "Young"));
+  printf("Length After Removing: %d", listlen(alt));
+  printf("\nRemoving 'Frame' and 'Cutie'...\n");
+  print_list(alt = remove_song(alt, "Frame", "Cutie"));
+  printf("Length After Removing: %d", listlen(alt));
+  printf("\nRemoving 'Walk' and 'Pit'...\n");
+  print_list(alt = remove_song(alt, "Walk", "Pit"));
+  printf("Length After Removing: %d", listlen(alt));
   printf("\nRemoving 'Woulda' and 'Thought'...\n");
   print_list(alt = remove_song(alt, "Woulda", "Thought"));
+  printf("Length After Removing: %d", listlen(alt));
 
   // Freeing the List - Verified with valgrind
   free_list(alt);
   //  print_playlist(Alt); // Should be fine
-
+  /*===============================================================    
   // PLAYLIST TESTING
   // Create Library
   playlist* Alt = init_playlist();
@@ -135,7 +144,7 @@ int main() {
 
   printf("\nDeleting playlist...\n");
   delete_playlist(Alt);
-  /*===============================================================    
+
     ===============================================================*/
   return 0;  
 }
