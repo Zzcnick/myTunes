@@ -94,18 +94,33 @@ node* search_artist(playlist *pl, char Artist[]) {
 node* shuffle(playlist *pl) {
   node* raw = pl->all;
   int l = listlen(raw);
-  node* copy = NULL;
-  while (l) {
-    copy = insert_front(copy, raw->title, raw->artist);
-    raw = raw->child;
-    l--;
+  unsigned int order[l];
+  int i; 
+  for (i = 0; i < l; i++)
+    order[i] = i;
+  for (i = 0; i < l; i++) {
+    int seed = rand()%l;
+    int store = order[i];
+    order[i] = order[seed];
+    order[seed] = store;
+    // printf("order[i] = %d\t order[seed] = %d\n", order[i], order[seed]);
   }
-  l = listlen(copy);
-  while (l) {
-    
-    l--;
-  }
-  return copy;
+  //  for (i = 0; i < l; i++) {
+  //    printf("order[%d] = %d\n", i, order[i]);
+  //  }
+  node* ret = insert_front(NULL, 
+			   get_song(raw,order[0])->title,
+			   get_song(raw,order[0])->artist);
+  for (i = 1; i < l; i++) 
+    ret = insert_front(ret, 
+		       get_song(raw,order[i])->title,
+		       get_song(raw,order[i])->artist);
+  return ret;
+}
+void swap(int *i1, int *i2) {
+  *i1 = *i1 ^ *i2;
+  *i2 = *i1 ^ *i2;
+  *i1 = *i1 ^ *i2;
 }
 
 // delete_playlist

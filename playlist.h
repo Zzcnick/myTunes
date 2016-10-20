@@ -22,3 +22,5 @@ node* search_artist(playlist *pl, char Artist[]);
 node* shuffle(playlist *pl);
 void delete_playlist(playlist *pl);
 
+// Helper Function Headers
+void swap(int *i1, int *i2);

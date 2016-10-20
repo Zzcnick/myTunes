@@ -21,5 +21,6 @@ node* find_song(node *n, char Title[]);
 node* find_artist(node *n, char Artist[]);
 node* free_list(node *n);
 node* get_random_song(node *n);
+node* get_song(node *n, int index);
 node* remove_index(node *n, int index);
 node* remove_song(node *n, char Title[], char Artist[]);

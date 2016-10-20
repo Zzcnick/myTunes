@@ -119,6 +119,20 @@ node* get_random_song(node *n) {
   return n;
 }
 
+// get_song
+// returns a song given an index
+node* get_song(node *n, int index) {
+  if (n) {
+    int l = listlen(n);
+    if (index < l)
+      while (index) {
+	n = n->child;
+	index--;
+      }
+  }
+  return n;
+}
+
 // remove_index
 // removes the song at a certain index if it exists, and then returns the frontmost node
 node* remove_index(node* n, int index) {
