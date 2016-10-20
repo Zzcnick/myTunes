@@ -159,10 +159,15 @@ node* remove_index(node* n, int index) {
 // removes a song from a list given a title and artist, if it exists and returns front node
 node* remove_song(node* n, char Title[], char Artist[]) {
   node* ret = n;
+  int l = listlen(n);
   // Size 0
-  if (!n) return ret;
+  if (!l) return ret;
   // Size 1
   if (strstr(n->title, Title) && strstr(n->artist, Artist)) {
+    if (l == 1) {
+      free(n);
+      return NULL;
+    }
     ret = n->child;
     free(n);
   } else {

@@ -59,19 +59,33 @@ node* playlist_remove_song(playlist *pl, char Title[], char Artist[]) {
   // Removing from library if removed from all songs
   if (l_initial - l_final) {
     pl->all = ret;
-    int i = 0;
-    for (i; i < 26; i++) {
+    int i;
+    for (i = 0; i < 26; i++) {
       l_initial = listlen(pl->library[i]);
+      //      if (!l_initial) break;
       ret = remove_song(pl->library[i], Title, Artist);
       l_final = listlen(pl->library[i]);
+      /*      
+      if (l_initial - l_final) { // Length changed
+	printf("i:%d\n\nALLLLLLLLLLLL GOOOOOOOOOOOOOD",i);
+	if (!l_final) {
+	  free(pl->library[i]);
+	  pl->library[i] = (node *)calloc(1,sizeof(node));
+	} else {
+	  pl->library[i] = ret;
+	}
+	break;
+      } 
+      */
       if (!l_final) {
 	free(pl->library[i]);
 	pl->library[i] = (node *)calloc(1,sizeof(node));
-	break;
-      } else if (l_initial - l_final) {
+	return ret;
+      } else if (l_initial - l_final) { // Length changed
 	pl->library[i] = ret;
-	break;
+	return ret;
       }
+
     }
   }
   return ret;
@@ -98,16 +112,17 @@ node* shuffle(playlist *pl) {
   int i; 
   for (i = 0; i < l; i++)
     order[i] = i;
-  for (i = 0; i < l; i++) {
+  for (i = 0; i < 7 * l; i++) {
     int seed = rand()%l;
-    int store = order[i];
-    order[i] = order[seed];
+    int store = order[i%l];
+    //printf("i: %d\tseed: %d\torder[i] = %d\t order[seed] = %d\n",
+    //       i%l,seed,order[i%l],order[seed]);
+    order[i%l] = order[seed];
     order[seed] = store;
-    // printf("order[i] = %d\t order[seed] = %d\n", order[i], order[seed]);
   }
   //  for (i = 0; i < l; i++) {
-  //    printf("order[%d] = %d\n", i, order[i]);
-  //  }
+  //  printf("order[%d] = %d\n", i, order[i]);
+  //}
   node* ret = insert_front(NULL, 
 			   get_song(raw,order[0])->title,
 			   get_song(raw,order[0])->artist);
@@ -133,7 +148,7 @@ void delete_playlist(playlist *pl) {
     else
       free(pl->library[i]);
   }
-  free(pl->all);
+  free_list(pl->all);
   free(pl);
 }
 

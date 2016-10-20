@@ -75,6 +75,8 @@ int main() {
   printf("\nPrinting initial playlist...\n");
   print_playlist(Alt);
 
+
+
   // Populating Playlist
   printf("\nAdding songs...\n");
   playlist_add_song(Alt, "Cough Syrup", "Young The Giant");
@@ -113,13 +115,13 @@ int main() {
   // Removing Songs
   print_playlist(Alt);
 
-  printf("\nRemoving 'Ready' and 'Puggy'...\n");
-  playlist_remove_song(Alt, "Ready", "Puggy");
-  print_playlist(Alt); 
-
   printf("\nRemoving 'Hotel' and 'Eagles'...\n");
   playlist_remove_song(Alt, "Hotel", "Eagles");
   print_playlist(Alt);
+
+  printf("\nRemoving 'Ready' and 'Puggy'...\n");
+  playlist_remove_song(Alt, "Ready", "Puggy");
+  print_playlist(Alt); 
 
   printf("\nRemoving 'Woulda' and 'Thought'...\n");
   playlist_remove_song(Alt, "Woulda", "Thought");
@@ -127,11 +129,13 @@ int main() {
 
   // Shuffling
   printf("\nReturning a shuffle...\n");
-  print_list(shuffle(Alt));
+  node* shuf = shuffle(Alt);
+  print_list(shuf);
+  free_list(shuf);
 
   printf("\nDeleting playlist...\n");
-  delete_playlist(Alt); 
-/*===============================================================  
-  ===============================================================*/
+  delete_playlist(Alt);
+  /*===============================================================    
+    ===============================================================*/
   return 0;  
 }
