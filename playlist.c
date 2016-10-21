@@ -59,36 +59,21 @@ node* playlist_remove_song(playlist *pl, char Title[], char Artist[]) {
   // Removing from library if removed from all songs
   if (l_initial - l_final) {
     pl->all = ret;
-    int i;
+    int i; int j;
+    node* test;
     for (i = 0; i < 26; i++) {
-      l_initial = listlen(pl->library[i]);
-      //      if (!l_initial) break;
-      ret = remove_song(pl->library[i], Title, Artist);
-      l_final = listlen(pl->library[i]);
-      /*      
-      if (l_initial - l_final) { // Length changed
-	printf("i:%d\n\nALLLLLLLLLLLL GOOOOOOOOOOOOOD",i);
-	if (!l_final) {
-	  free(pl->library[i]);
-	  pl->library[i] = (node *)calloc(1,sizeof(node));
-	} else {
-	  pl->library[i] = ret;
+      int l = listlen(pl->library[i]);
+      for (j = 0; j < l; j++) {
+	test = get_song(pl->library[i], j);
+	if (strstr(test->title, Title) &&
+	    strstr(test->artist, Artist)) {
+	  pl->library[i] = remove_index(pl->library[i],j);
+	  return pl->library[i];
 	}
-	break;
-      } 
-      */
-      if (!l_final) {
-	free(pl->library[i]);
-	pl->library[i] = (node *)calloc(1,sizeof(node));
-	return ret;
-      } else if (l_initial - l_final) { // Length changed
-	pl->library[i] = ret;
-	return ret;
       }
-
     }
   }
-  return ret;
+  return NULL;
 }
 
 // search_song
